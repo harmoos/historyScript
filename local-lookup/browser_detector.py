@@ -57,7 +57,6 @@ def get_installed_browsers():
             }
         }
 
-
     else:
         home_path = get_real_home()
         browsers = {
