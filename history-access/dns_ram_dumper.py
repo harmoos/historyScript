@@ -1,7 +1,7 @@
 import os
-import subprocess
-import time
 import sys
+import time
+import subprocess
 
 this_folder = os.path.dirname(os.path.abspath(__file__))
 root_folder = os.path.dirname(this_folder)

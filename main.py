@@ -1,5 +1,6 @@
-import sys
 import os
+import sys
+import glob
 import platform
 
 root_folder = os.path.dirname(os.path.abspath(__file__))
@@ -9,6 +10,16 @@ sys.path.append(lookup_folder)
 from history_extractor import main_history_extractor
 from dns_ram_dumper import start_dns_attack
 from dns_win import dump_dns_win
+
+def clean_old_logs():
+    txt_files = glob.glob("*.txt")
+    if not txt_files:
+        return
+    for file in txt_files:
+        try:
+            os.remove(file)
+        except Exception as e:
+            print(f"Failed to remove {file}: {e}")
 
 def check_admin_privileges():
     if sys.platform == "win32":
@@ -38,6 +49,7 @@ def run_linux_routine():
         print("WARNING: if you want to extract DNS cache history please execute the script with 'sudo'")
 
 def main():
+    clean_old_logs()
     system = platform.system()
     if system == "Windows":
         run_windows_routine()
