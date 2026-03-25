@@ -46,7 +46,7 @@ def get_installed_browsers():
     print("Detected Browsers:")
     if len(found) > 0:
         for b in found:
-            print(f"- {b}")
+            print(f"\n- {b}")
     else:
         print("No browsers detected.")
 
