@@ -17,7 +17,7 @@ def dump_dns_win():
             sites = set([site.strip() for site in output_res if site.strip()])
 
             with open(output_file, "a", encoding="utf-8") as f:
-                f.write(f"Windows DNS cache dump ({len(sites)}) websites")
+                f.write(f"Windows DNS cache dump ({len(sites)}) websites\n")
                 f.write("-" * 50 + "\n")
                 for site in sites:
                     f.write(f"-> {site}\n")
