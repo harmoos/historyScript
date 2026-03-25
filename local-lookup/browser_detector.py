@@ -1,35 +1,83 @@
-import shutil
 import os
+import pwd
+import shutil
+
+def get_real_home():
+    sudo_user = os.environ.get("SUDO_USER")
+    if sudo_user:
+        return pwd.getpwnam(sudo_user).pw_dir
+    else:
+        return os.path.expanduser("~")
 
 def get_installed_browsers():
+    browsers = {}
 
-    browsers = {
-        "chrome": {
-            "exec": "google-chrome",
-            "config": os.path.expanduser("~/.config/google-chrome/"),
-            "type": "chromium"
-        },
-        "firefox": {
-            "exec": "firefox",
-            "config": os.path.expanduser("~/.mozilla/firefox/"),
-            "type": "firefox"
-        },
-        "brave": {
-            "exec": "brave-browser",
-            "config": os.path.expanduser("~/.config/BraveSoftware/"),
-            "type": "chromium"
-        },
-        "chromium": {
-            "exec": "chromium",
-            "config": os.path.expanduser("~/.config/chromium/"),
-            "type": "chromium"
-        },
-        "opera": {
-            "exec": "opera",
-            "config": os.path.expanduser("~/.config/opera/"),
-            "type": "chromium"
+    if os.name == 'nt':
+        local_appdata = os.getenv('LOCALAPPDATA')
+        roaming_appdata = os.getenv('APPDATA')
+
+        browsers = {
+            "chrome": {
+                "exec": "chrome", 
+                "config": os.path.join(local_appdata, "Google", "Chrome", "User Data"),
+                "type": "chromium"
+            },
+            "firefox": {
+                "exec": "firefox",
+                "config": os.path.join(roaming_appdata, "Mozilla", "Firefox"),
+                "type": "firefox"
+            },
+            "brave": {
+                "exec": "brave",
+                "config": os.path.join(local_appdata, "BraveSoftware", "Brave-Browser", "User Data"),
+                "type": "chromium"
+            },
+            "chromium": {
+                "exec": "chromium",
+                "config": os.path.join(local_appdata, "Chromium", "User Data"),
+                "type": "chromium"
+            },
+            "opera": {
+                "exec": "opera",
+                "config": os.path.join(roaming_appdata, "Opera Software", "Opera Stable"),
+                "type": "chromium"
+            },
+            "edge": {
+                "exec": "msedge",
+                "config": os.path.join(local_appdata, "Microsoft", "Edge", "User Data"),
+                "type": "chromium"
+            }
         }
-    }
+
+    else:
+        home_path = get_real_home()
+        browsers = {
+            "chrome": {
+                "exec": "google-chrome",
+                "config": os.path.join(home_path, ".config/google-chrome/"),
+                "type": "chromium"
+            },
+            "firefox": {
+                "exec": "firefox",
+                "config": os.path.join(home_path, ".mozilla/firefox/"),
+                "type": "firefox"
+            },
+            "brave": {
+                "exec": "brave-browser",
+                "config": os.path.join(home_path, ".config/BraveSoftware/"),
+                "type": "chromium"
+            },
+            "chromium": {
+                "exec": "chromium",
+                "config": os.path.join(home_path, ".config/chromium/"),
+                "type": "chromium"
+            },
+            "opera": {
+                "exec": "opera",
+                "config": os.path.join(home_path, ".config/opera/"),
+                "type": "chromium"
+            }
+        }
 
     found = []
     found_config = {}
